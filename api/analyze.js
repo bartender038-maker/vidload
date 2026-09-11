@@ -1,4 +1,4 @@
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -9,48 +9,73 @@ export default function handler(req, res) {
 
   if (!url) {
     return res.status(400).json({
-      error: "URL is required."
+      error: "Please enter a video URL."
     });
   }
 
-  let videoUrl;
+  let parsed;
 
   try {
-    videoUrl = new URL(url);
+    parsed = new URL(url);
   } catch {
     return res.status(400).json({
-      error: "Invalid URL."
+      error: "Please enter a valid URL."
     });
   }
 
-  if (!["http:", "https:"].includes(videoUrl.protocol)) {
+  if (!["http:", "https:"].includes(parsed.protocol)) {
     return res.status(400).json({
-      error: "Only HTTP and HTTPS links are supported."
+      error: "Only public HTTP/HTTPS URLs are supported."
     });
   }
 
-  const match = videoUrl.pathname
-    .toLowerCase()
-    .match(/\.(mp4|webm|mov|m4v|ogv|ogg)$/);
+  const hostname = parsed.hostname.toLowerCase();
 
-  if (!match) {
+  const blockedHosts = [
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0"
+  ];
+
+  if (blockedHosts.includes(hostname)) {
+    return res.status(400).json({
+      error: "That URL cannot be processed."
+    });
+  }
+
+  const extensionMatch = parsed.pathname
+    .toLowerCase()
+    .match(/\.(mp4|webm|mov|m4v|ogv|ogg)(?:$|\?)/);
+
+  if (!extensionMatch) {
     return res.status(400).json({
       error:
-        "Use a direct public video file ending in .mp4, .webm, .mov, .m4v, .ogv or .ogg."
+        "This link is not a direct video file. Direct video links such as .mp4 or .webm are currently supported."
     });
   }
 
-  const filename =
-    decodeURIComponent(videoUrl.pathname.split("/").pop() || "video.mp4");
+  const extension = extensionMatch[1].toUpperCase();
 
-  const title = filename
-    .replace(/\.[^.]+$/, "")
-    .replace(/[-_]+/g, " ");
+  let filename = decodeURIComponent(
+    parsed.pathname.split("/").pop() || "video"
+  );
+
+  filename = filename.replace(/\.[^.]+$/, "");
+
+  filename = filename
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!filename) {
+    filename = "Video";
+  }
 
   return res.status(200).json({
-    title,
-    format: match[1].toUpperCase(),
-    host: videoUrl.hostname,
-    downloadUrl: videoUrl.toString()
+    success: true,
+    title: filename,
+    format: extension,
+    host: parsed.hostname,
+    downloadUrl: parsed.toString()
   });
 }
