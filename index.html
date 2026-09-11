@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a0f">
+  <title>VidLoad</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+  <a class="brand" href="/">▶ VidLoad</a>
+  <a href="#how">How it works</a>
+</nav>
+
+<main>
+
+<section class="hero">
+
+  <div class="pill">PUBLIC VIDEO DOWNLOADER</div>
+
+  <h1>
+    Save the videos<br>
+    <span>you're allowed to keep.</span>
+  </h1>
+
+  <p>
+    Paste a direct public video link and VidLoad will check the file.
+  </p>
+
+  <form id="form">
+    <input
+      id="url"
+      type="url"
+      placeholder="Paste video URL here..."
+      required
+    >
+
+    <button id="go" type="submit">
+      Analyze
+    </button>
+  </form>
+
+  <div id="status"></div>
+
+  <div id="card" class="card hidden">
+
+    <div class="top">
+
+      <div>
+        <small>VIDEO READY</small>
+        <h2 id="name"></h2>
+      </div>
+
+      <b>✓</b>
+
+    </div>
+
+    <div class="meta">
+
+      <div>
+        <small>FORMAT</small>
+        <strong id="format"></strong>
+      </div>
+
+      <div>
+        <small>HOST</small>
+        <strong id="host"></strong>
+      </div>
+
+      <a
+        id="download"
+        target="_blank"
+        rel="noopener"
+      >
+        Download
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="how" class="how">
+
+  <h2>How it works</h2>
+
+  <div class="grid">
+
+    <article>
+      <i>01</i>
+      <h3>Paste</h3>
+      <p>Copy a public video URL.</p>
+    </article>
+
+    <article>
+      <i>02</i>
+      <h3>Analyze</h3>
+      <p>We validate the direct media file.</p>
+    </article>
+
+    <article>
+      <i>03</i>
+      <h3>Download</h3>
+      <p>Open the file and save it.</p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<div class="notice">
+
+  <strong>Use responsibly.</strong>
+
+  VidLoad is for content you own or have permission to download.
+  It does not bypass DRM, private access controls or paywalls.
+
+</div>
+
+</main>
+
+
+<footer>
+  © 2026 VidLoad
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
