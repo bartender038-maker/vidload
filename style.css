@@ -1,0 +1,288 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080a0f;
+  color: #f5f7fa;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+nav {
+  height: 72px;
+  max-width: 1050px;
+  margin: auto;
+  padding: 0 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  color: #8992a1;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.brand {
+  font-size: 20px !important;
+  font-weight: 850;
+  color: #fff !important;
+}
+
+.hero {
+  text-align: center;
+  max-width: 850px;
+  margin: auto;
+  padding: 100px 20px 85px;
+}
+
+.hero > small,
+.card small {
+  color: #7f8998;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.pill {
+  display: inline-block;
+  border: 1px solid #262c36;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #87909e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.hero h1 {
+  font-size: clamp(44px, 9vw, 80px);
+  line-height: 0.98;
+  letter-spacing: -4px;
+  margin: 22px 0;
+}
+
+.hero h1 span {
+  color: #737d8c;
+}
+
+.hero > p {
+  color: #9da6b5;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.hero form {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: #12151c;
+  border: 1px solid #292f39;
+  border-radius: 15px;
+  max-width: 730px;
+  margin: auto;
+}
+
+.hero input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: 0;
+  color: #fff;
+  padding: 14px;
+  font-size: 15px;
+}
+
+.hero button,
+.meta a {
+  background: #fff;
+  color: #080a0f;
+  border: 0;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 22px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero button {
+  min-height: 46px;
+}
+
+.hero button:disabled {
+  opacity: 0.6;
+}
+
+.card {
+  max-width: 730px;
+  text-align: left;
+  background: #11141b;
+  border: 1px solid #292f39;
+  border-radius: 18px;
+  padding: 22px;
+  margin: 20px auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top h2 {
+  margin: 7px 0 0;
+  font-size: 19px;
+}
+
+.top b {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  color: #080a0f;
+  display: grid;
+  place-items: center;
+}
+
+.meta {
+  border-top: 1px solid #252b34;
+  margin-top: 20px;
+  padding-top: 18px;
+  display: flex;
+  gap: 30px;
+  align-items: end;
+}
+
+.meta small {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.meta strong {
+  font-size: 13px;
+}
+
+.meta a {
+  margin-left: auto;
+  padding: 12px 17px;
+  font-size: 13px;
+}
+
+#status {
+  height: 24px;
+  padding-top: 10px;
+  color: #8993a2;
+  font-size: 12px;
+}
+
+.how {
+  max-width: 1050px;
+  margin: auto;
+  padding: 70px 22px;
+  border-top: 1px solid #1e232c;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.grid article {
+  border: 1px solid #202631;
+  border-radius: 15px;
+  padding: 22px;
+  color: #737d8b;
+}
+
+.grid h3 {
+  color: #fff;
+  margin: 20px 0 8px;
+}
+
+.grid p {
+  color: #828c9b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.notice {
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  padding: 18px 22px;
+  border: 1px solid #202631;
+  border-radius: 13px;
+  color: #7f8998;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notice strong {
+  color: #c7ccd5;
+}
+
+footer {
+  text-align: center;
+  color: #505967;
+  font-size: 11px;
+  padding: 30px;
+}
+
+@media (max-width: 650px) {
+
+  nav a {
+    display: none;
+  }
+
+  .hero {
+    padding: 70px 17px;
+  }
+
+  .hero h1 {
+    letter-spacing: -2px;
+  }
+
+  .hero form {
+    display: block;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  .hero input {
+    width: 100%;
+    background: #12151c;
+    border: 1px solid #292f39;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .hero button {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta {
+    flex-wrap: wrap;
+  }
+
+  .meta a {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  }
