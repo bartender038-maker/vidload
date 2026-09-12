@@ -7,20 +7,18 @@ const card = document.querySelector("#card");
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  card.classList.add("hidden");
-
   const url = urlInput.value.trim();
 
-  try {
-    new URL(url);
-  } catch {
-    status.textContent = "Please enter a valid URL.";
+  if (!url) {
+    status.textContent = "Please enter a video link.";
     return;
   }
 
   button.disabled = true;
-  button.textContent = "Checking...";
-  status.textContent = "Analyzing link...";
+  button.textContent = "Extracting...";
+  status.textContent = "Finding video...";
+
+  card.classList.add("hidden");
 
   try {
     const response = await fetch("/api/analyze", {
@@ -34,18 +32,35 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error);
+      throw new Error(data.error || "Could not fetch this link.");
     }
 
-    document.querySelector("#name").textContent = data.title;
-    document.querySelector("#format").textContent = data.format;
-    document.querySelector("#host").textContent = data.host;
-    document.querySelector("#download").href = data.downloadUrl;
+    if (!data.formats || data.formats.length === 0) {
+      throw new Error("No downloadable video was found.");
+    }
+
+    document.querySelector("#name").textContent =
+      data.title || "Video";
+
+    document.querySelector("#format").textContent =
+      data.formats[0].label || data.formats[0].ext || "Video";
+
+    document.querySelector("#host").textContent =
+      data.source || "Video";
+
+    const download = document.querySelector("#download");
+
+    download.href = data.formats[0].url;
+    download.target = "_blank";
+    download.textContent =
+      "Download " + (data.formats[0].label || "");
 
     card.classList.remove("hidden");
-    status.textContent = "Ready to download.";
+
+    status.textContent = "Video found.";
   } catch (error) {
-    status.textContent = error.message || "Something went wrong.";
+    status.textContent =
+      error.message || "Could not fetch this link.";
   } finally {
     button.disabled = false;
     button.textContent = "Analyze";
