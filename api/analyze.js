@@ -13,69 +13,59 @@ export default async function handler(req, res) {
     });
   }
 
-  let parsed;
-
   try {
-    parsed = new URL(url);
+    new URL(url);
   } catch {
     return res.status(400).json({
       error: "Please enter a valid URL."
     });
   }
 
-  if (!["http:", "https:"].includes(parsed.protocol)) {
-    return res.status(400).json({
-      error: "Only public HTTP/HTTPS URLs are supported."
+  try {
+    const response = await fetch("https://gendownload.com/api/extract", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: data.error || "Unable to extract this video."
+      });
+    }
+
+    if (!data.formats || data.formats.length === 0) {
+      return res.status(404).json({
+        error: "No downloadable video formats were found."
+      });
+    }
+
+    const formats = data.formats
+      .filter(format => format.type === "video")
+      .map(format => ({
+        label: format.label || "Video",
+        extension: format.ext || "mp4",
+        filesize: format.filesize || null,
+        url: format.url
+      }));
+
+    return res.status(200).json({
+      success: true,
+      title: data.title || "Video",
+      thumbnail: data.thumbnail || null,
+      duration: data.duration || null,
+      source: data.source || null,
+      author: data.author || null,
+      formats
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: "The video could not be processed right now."
     });
   }
-
-  const hostname = parsed.hostname.toLowerCase();
-
-  const blockedHosts = [
-    "localhost",
-    "127.0.0.1",
-    "0.0.0.0"
-  ];
-
-  if (blockedHosts.includes(hostname)) {
-    return res.status(400).json({
-      error: "That URL cannot be processed."
-    });
-  }
-
-  const extensionMatch = parsed.pathname
-    .toLowerCase()
-    .match(/\.(mp4|webm|mov|m4v|ogv|ogg)(?:$|\?)/);
-
-  if (!extensionMatch) {
-    return res.status(400).json({
-      error:
-        "This link is not a direct video file. Direct video links such as .mp4 or .webm are currently supported."
-    });
-  }
-
-  const extension = extensionMatch[1].toUpperCase();
-
-  let filename = decodeURIComponent(
-    parsed.pathname.split("/").pop() || "video"
-  );
-
-  filename = filename.replace(/\.[^.]+$/, "");
-
-  filename = filename
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!filename) {
-    filename = "Video";
-  }
-
-  return res.status(200).json({
-    success: true,
-    title: filename,
-    format: extension,
-    host: parsed.hostname,
-    downloadUrl: parsed.toString()
-  });
-}
+      }
